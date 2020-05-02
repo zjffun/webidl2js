@@ -75,6 +75,17 @@ describe("with processors", () => {
             };
           }
         }
+        if (idl.idlType.idlType === "CORSSettings") {
+          return {
+            get: `
+              const value = ${implObj}.getAttributeNS(null, "${attrName}");
+              return value === null ? "" : "processedVaule";
+            `,
+            set: `
+              ${implObj}.setAttributeNS(null, "${attrName}", V);
+            `
+          };
+        }
         const reflect = reflector[idl.idlType.idlType];
         return {
           get: reflect.get(implObj, attrName),
